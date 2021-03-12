@@ -1,27 +1,9 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 from .models import Tweet
 import os
-import json
 from dotenv import load_dotenv
 load_dotenv()
 import tweepy
-
-# with open('tweet.json') as json_file:
-#     data = json.load(json_file)
-#     print("Type:", type(data))
-#     # tweet = Tweet.create(**json_data)
-#     # if tweet:
-#     #     print('imported...')
-#     # else:
-#     #     print('ERROR...')
-#     # for tweet in json_data:
-#     #     tweet = Tweet.create(**tweet)
-#     #     if tweet:
-#     #         print('imported...')
-#     #
-#     #     else:
-#     #         print('ERROR...')
 
 
 def getTweet(searchWord):
@@ -32,13 +14,9 @@ def getTweet(searchWord):
 
     auth = tweepy.OAuthHandler(consumerKey, consumerSecret)
     auth.set_access_token(accessToken, accessTokenSecret)
-
     api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
 
     tweets = []
-    # tweetDict = {}
-    # data = []
-    # head = []
     count = 1
     sinceDate = '2017-02-01'
 
@@ -60,10 +38,10 @@ def getTweet(searchWord):
 
             tweets.append(data)
             tweetDict = {head[i]: data[i] for i in range(len(head))}
-            tweet = Tweet.objects.create(
+            tweet = Tweet.objects.get_or_create(
                 id=tweetDict.get('id'),
                 tip=tweetDict.get('text'),
-                timeStamps=tweetDict.get('createdAt'),
+                timeStamps=str(tweetDict.get('createdAt')),
                 author=tweetDict.get('author'),
                 mediaUrl=tweetDict.get('mediaUrl'),
                 totalLike=tweetDict.get('totalLike'),
@@ -77,12 +55,17 @@ def getTweet(searchWord):
         except tweepy.TweepError as e:
             print('ERROR', e.reason)
             continue
-    return HttpResponse(tweetDict)
+        return tweet
+
+# word= '@python_tip'
+# context = getTweet(word)
+
 
 def showTweet(request):
-    word= '@python_tip'
-    context = getTweet(word)
-    return HttpResponse(context)
+    tweets = Tweet.objects.all().order_by('totalLike')
+    context = {'tweets': tweets}
+    return render(request, 'tweet/showTweet.html', context)
+
 
 
 

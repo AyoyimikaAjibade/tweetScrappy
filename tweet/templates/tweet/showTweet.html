@@ -2,4 +2,32 @@
 
 {% block content %}
 
+<div class="row mt-5">
+    <table id="example" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>TEXT</th>
+                    <th>CREATED AT</th>
+                    <th>AUTHOR</th>
+                    <th>MEDIA URL</th>
+                    <th>TOTAL LIKE</th>
+                    <th>TOTAL RETWEET</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tweet in tweets %}
+                <tr>
+                    <td>{{tweet.id}}</td>
+                    <td>{{tweet.tip}}</td>
+                    <td>{{tweet.timeStamps}}</td>
+                    <td>{{tweet.author}}</td>
+                    <td>{{tweet.mediaUrl}}</td>
+                    <td>{{tweet.totalLike}}</td>
+                    <td>{{tweet.totalRetweet}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+    </table>
+</div>
 {% endblock %}
