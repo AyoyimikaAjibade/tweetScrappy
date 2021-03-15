@@ -1,10 +1,20 @@
 from django.shortcuts import render
 from django.db.utils import OperationalError, IntegrityError
+from django.contrib.auth.decorators import login_required
 from .models import Tweet
 import os
+import tweepy
 from dotenv import load_dotenv
 load_dotenv()
-import tweepy
+
+#Api
+from tweet.serializers import TweetSerializer
+from rest_framework import generics
+from rest_framework import permissions
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework.reverse import reverse
+
 
 def setApi():
     consumerKey = str(os.getenv('apiKey'))
@@ -62,10 +72,29 @@ def getData():
 # Will schedule time to retrieve data at a certain time
 # getData()
 
+@login_required
 def showTweet(request):
-    tweets = Tweet.objects.all().order_by('totalLike')
+    tweets = Tweet.objects.all().order_by('-totalLike')
     context = {'tweets': tweets}
     return render(request, 'tweet/showTweet.html', context)
+
+@api_view(['GET'])
+def api_root(request, format=None):
+    return Response({
+        'tweets': reverse('tweet-list', request=request, format=format),
+    })
+
+
+class TweetList(generics.ListCreateAPIView):
+    queryset = Tweet.objects.all()
+    serializer_class = TweetSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+
+class TweetDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Tweet.objects.all()
+    serializer_class = TweetSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 
