@@ -2,13 +2,9 @@
 
 {% block content %}
 
-<div>
-    <h2>Hello {{user.username}}!</h2>
-    <div>
-        <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-size="large" data-via="Ayoyimika17" data-related="@python_tip" data-show-count="false">Tweet</a>
-    </div>
+<div style=" margin-top:20px; margin-bottom:20px">
 
-    <table id="myTable" class="table table-striped table-bordered" style="width:100%">
+    <table id="example" class="table table-striped table-bordered" style="width:100%; font-size:12px; margin-top:20px">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -24,7 +20,7 @@
                 {% for tweet in tweets %}
                 <tr>
                     <td>{{tweet.id}}</td>
-                    <td style="white-space: wrap;">{{tweet.tip}}</td>
+                    <td>{{tweet.tip}}</td>
                     <td>{{tweet.timeStamps}}</td>
                     <td>{{tweet.author}}</td>
                     <td>{{tweet.mediaUrl}}</td>

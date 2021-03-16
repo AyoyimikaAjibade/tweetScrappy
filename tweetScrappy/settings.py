@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'social_django',
     'tweet.apps.TweetConfig',
+    'crispy_forms',
     'rest_framework',
 ]
 
@@ -130,9 +131,16 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
-LOGIN_REDIRECT_URL = '/api/v1/tweet/'
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/'
+
 
 SOCIAL_AUTH_TWITTER_KEY =str(os.getenv('socialAuthKey'))
 SOCIAL_AUTH_TWITTER_SECRET = str(os.getenv('socialAuthSecret'))
+SOCIAL_AUTH_LOGIN_ERROR_URL = '/settings/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
+SOCIAL_AUTH_RAISE_EXCEPTIONS = False

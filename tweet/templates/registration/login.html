@@ -1,13 +1,24 @@
 {% extends 'tweet/index.html' %}
 
+{% block title %}Log In{% endblock %}
+{% load crispy_forms_tags %}
+
 {% block content %}
- <h2>Login</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Login</button>
-  </form>
-  <br>
-  <p><strong>-- OR --</strong></p>
-    <a href="{% url 'social:begin' 'twitter' %}">Login with Twitter</a>
+
+<div class="row">
+    <div class="card mb-3" style="width: 100%; margin-top: 20px;">
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                {{form|crispy}}
+                <p class="card-text"></p>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-outline-success btn-lg" style="float:center;">Log In</button> |
+                    <button class="btn btn-outline-success btn-lg" ><a  href="{% url 'social:begin' 'twitter' %}">Login with Twitter</a></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
